@@ -1,0 +1,32 @@
+package com.bilibililevel6.home.popular.entity
+
+data class Popluar(
+    val aid: Int,
+    val bvid: String,
+    val cid: Int,
+    val copyright: Int,
+    val ctime: Int,
+    val desc: String,
+    val dimension: Dimension,
+    val duration: Int,
+    val dynamic: String,
+    val first_frame: String,
+    val is_ogv: Boolean,
+    val mission_id: Int,
+    val ogv_info: Any,
+    val owner: Owner,
+    val pic: String,
+    val pub_location: String,
+    val pubdate: Int,
+    val rcmd_reason: RcmdReason,
+    val rights: Rights,
+    val season_type: Int,
+    val short_link: String,
+    val short_link_v2: String,
+    val stat: Stat,
+    val state: Int,
+    val tid: Int,
+    val title: String,
+    val tname: String,
+    val videos: Int
+)

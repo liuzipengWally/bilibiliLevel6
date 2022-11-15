@@ -2,12 +2,12 @@ package com.bilibililevel6.home
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import com.bilibililevel6.BaseActivity
 import com.bilibililevel6.databinding.ActivityHomeBinding
 import com.bilibililevel6.login.LoginActivity
 
-class HomeActivity : AppCompatActivity() {
-    private val viewBinding by lazy(LazyThreadSafetyMode.NONE) {
+class HomeActivity : BaseActivity() {
+    private val viewBinding by lazy {
         ActivityHomeBinding.inflate(
             layoutInflater
         )

@@ -33,7 +33,7 @@ object RetrofitManager {
         }
     }
 
-    fun <T> getClientService(
+    fun <T> createClientService(
         baseUrl: String,
         serviceClass: Class<T>
     ): T {
@@ -47,7 +47,7 @@ object RetrofitManager {
             .create(serviceClass)
     }
 
-    fun <T> getWebService(
+    fun <T> createWebService(
         baseUrl: String,
         serviceClass: Class<T>
     ): T {
