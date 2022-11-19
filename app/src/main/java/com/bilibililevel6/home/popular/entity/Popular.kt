@@ -1,6 +1,6 @@
 package com.bilibililevel6.home.popular.entity
 
-data class Popluar(
+data class Popular(
     val aid: Int,
     val bvid: String,
     val cid: Int,
@@ -9,7 +9,7 @@ data class Popluar(
     val desc: String,
     val dimension: Dimension,
     val duration: Int,
-    val dynamic: String,
+    val `dynamic`: String,
     val first_frame: String,
     val is_ogv: Boolean,
     val mission_id: Int,

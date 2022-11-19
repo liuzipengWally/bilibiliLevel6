@@ -9,6 +9,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.net.ConnectException
 import java.util.concurrent.TimeUnit
@@ -43,6 +44,7 @@ object RetrofitManager {
         return Retrofit.Builder()
             .client(httpClient!!)
             .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(serviceClass)
     }
@@ -57,6 +59,7 @@ object RetrofitManager {
         return Retrofit.Builder()
             .client(webHttpClient!!)
             .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(serviceClass)
     }
@@ -76,7 +79,6 @@ object RetrofitManager {
                     request
                         .newBuilder()
 //                        .url(request.url.newBuilder().addQueryParameter("","").build()) 添加默认参数
-                        .addHeader("X-Requested-With", "XMLHttpRequest")
                         .build()
                 )
             })
@@ -100,7 +102,6 @@ object RetrofitManager {
                     request
                         .newBuilder()
 //                        .url(request.url.newBuilder().addQueryParameter("","").build()) 添加默认参数
-                        .addHeader("X-Requested-With", "XMLHttpRequest")
                         .build()
                 )
             })

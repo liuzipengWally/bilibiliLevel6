@@ -1,14 +1,12 @@
 package com.bilibililevel6.home.popular
 
-import com.bilibililevel6.home.popular.entity.PopularData
-import com.bilibililevel6.net.BaseDataOfWeb
+import com.bilibililevel6.extensions.transformException
+import com.bilibililevel6.extensions.handleResponseCode
 import com.bilibililevel6.net.BilibiliHost
 import com.bilibililevel6.net.RetrofitManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 
 /**
  * author：liuzipeng
@@ -21,15 +19,20 @@ class PopularListRepo {
             PopularListNetService::class.java
         )
     }
+    private var pageNum = 1
 
-    suspend fun getPopularList() =
-        flow {
-            emit(webService.getPopularList())
-        }.flowOn(Dispatchers.IO)
-            .map {
-                if (it.code == 400) {
-                    throw Exception(it.message)
-                }
-                it.data
-            }
+    suspend fun fetchPopularList(
+        isLoadMore: Boolean
+    ) = flow {
+        if (!isLoadMore) pageNum = 1
+        val popularListResponse =
+            webService.getPopularList(if (isLoadMore) pageNum else 1, ITEM_COUNT)
+        emit(popularListResponse)
+    }.handleResponseCode()
+        .transformException()
+        .flowOn(Dispatchers.IO)
+
+    companion object {
+        private const val ITEM_COUNT = 20
+    }
 }

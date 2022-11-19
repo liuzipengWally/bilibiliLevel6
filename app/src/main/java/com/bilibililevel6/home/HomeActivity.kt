@@ -3,7 +3,9 @@ package com.bilibililevel6.home
 import android.content.Intent
 import android.os.Bundle
 import com.bilibililevel6.BaseActivity
+import com.bilibililevel6.R
 import com.bilibililevel6.databinding.ActivityHomeBinding
+import com.bilibililevel6.home.popular.PopularFragment
 import com.bilibililevel6.login.LoginActivity
 
 class HomeActivity : BaseActivity() {
@@ -19,5 +21,10 @@ class HomeActivity : BaseActivity() {
         viewBinding.LoginBtn.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.container,
+                PopularFragment.newInstance()
+            ).commit()
     }
 }

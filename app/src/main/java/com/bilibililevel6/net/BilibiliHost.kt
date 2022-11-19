@@ -6,6 +6,6 @@ package com.bilibililevel6.net
  */
 class BilibiliHost {
     companion object {
-        const val WEB_INTEFACE = "https://api.bilibili.com/x/web-interface"
+        const val WEB_INTEFACE = "https://api.bilibili.com/x/web-interface/"
     }
 }
