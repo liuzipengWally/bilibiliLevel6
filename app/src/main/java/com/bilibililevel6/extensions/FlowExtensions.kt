@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
  */
 fun <T> Flow<T>.transformException(): Flow<T> {
     return catch { ex ->
+        ex.printStackTrace()
         throw  NetExceptionHandler.handleException(ex)
     }
 }

@@ -39,7 +39,7 @@ class PopularListViewModel : ViewModel() {
                 }
             }.collect { popularData ->
                 _popularListUiState.update {
-                    it.copy(popularData = popularData, isLoading = false)
+                    it.copy(popularData = popularData, isLoading = false, isLoadMore = isLoadMore)
                 }
             }
         }

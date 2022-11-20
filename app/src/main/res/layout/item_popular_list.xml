@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:background="@drawable/background_image">
+
+    <ImageView
+        android:id="@+id/coverImg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cover_list_height"
+        android:src="@drawable/bili_default_image_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/playCountText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:drawablePadding="4dp"
+        android:gravity="center"
+        android:textColor="@color/color_cover_foreground_text"
+        android:textSize="@dimen/cover_foreground_text_size"
+        app:drawableStartCompat="@drawable/ic_baseline_play_circle_outline_24"
+        app:layout_constraintBottom_toBottomOf="@+id/coverImg"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="3610万" />
+
+    <TextView
+        android:id="@+id/bulletCountText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:drawablePadding="4dp"
+        android:gravity="center"
+        android:textColor="@color/color_cover_foreground_text"
+        android:textSize="@dimen/cover_foreground_text_size"
+        app:drawableStartCompat="@drawable/ic_baseline_bullet_24"
+        app:layout_constraintBottom_toBottomOf="@+id/coverImg"
+        app:layout_constraintStart_toEndOf="@+id/playCountText"
+        tools:text="999" />
+
+    <TextView
+        android:id="@+id/durationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/color_cover_foreground_text"
+        android:textSize="@dimen/cover_foreground_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/bulletCountText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bulletCountText"
+        tools:text="5:00" />
+
+    <ImageView
+        android:id="@+id/avatarImg"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        app:layout_constraintBottom_toBottomOf="@+id/upNameText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/titleText"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/color_text_title"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/avatarImg"
+        app:layout_constraintTop_toBottomOf="@+id/coverImg"
+        tools:text="肯德基的兄弟，墨西哥塔可钟曾今在中国全部倒闭，肯德基的兄弟，墨西哥塔可钟 肯德基的兄弟，墨西哥塔可钟曾今在中国全部倒闭，肯德基的兄弟，墨西哥塔可钟 肯德基的兄弟，墨西哥塔可钟曾今在中国全部倒闭，肯德基的兄弟，墨西哥塔可钟 " />
+
+    <TextView
+        android:id="@+id/upNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/color_cover_up_name"
+        android:textSize="@dimen/cover_up_name_size"
+        app:layout_constraintStart_toEndOf="@+id/avatarImg"
+        app:layout_constraintTop_toBottomOf="@+id/titleText"
+        tools:text="小短腿叔可米 · 2022-11-20" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

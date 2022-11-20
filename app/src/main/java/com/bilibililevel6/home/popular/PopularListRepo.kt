@@ -24,9 +24,9 @@ class PopularListRepo {
     suspend fun fetchPopularList(
         isLoadMore: Boolean
     ) = flow {
-        if (!isLoadMore) pageNum = 1
+        if (!isLoadMore) pageNum = 1 else pageNum++
         val popularListResponse =
-            webService.getPopularList(if (isLoadMore) pageNum else 1, ITEM_COUNT)
+            webService.getPopularList(pageNum, ITEM_COUNT)
         emit(popularListResponse)
     }.handleResponseCode()
         .transformException()
