@@ -20,7 +20,7 @@ fun <T> Flow<T>.transformException(): Flow<T> {
     }
 }
 
-fun <T : BaseDataOfWeb<PopularData>, PopularData> Flow<T>.handleResponseCode(): Flow<PopularData> =
+fun <T : BaseDataOfWeb<R>, R> Flow<T>.handleResponseCode(): Flow<R> =
     transform { value ->
         if (value.code == 0) {
             return@transform emit(value.data)

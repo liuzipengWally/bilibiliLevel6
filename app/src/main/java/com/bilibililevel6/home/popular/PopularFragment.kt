@@ -53,7 +53,7 @@ class PopularFragment : BaseFragment() {
 
     private fun initViewModel() {
         viewModel.send(PopularListIntent.FetchPopularList())
-        safeObserver(Lifecycle.State.STARTED) {
+        safeObserver {
             viewModel.popularListUiState.map {
                 it.isLoading
             }.distinctUntilChanged().collect {
@@ -61,7 +61,7 @@ class PopularFragment : BaseFragment() {
             }
         }
 
-        safeObserver(Lifecycle.State.STARTED) {
+        safeObserver {
             viewModel.popularListUiState.map {
                 it.popularData
             }.distinctUntilChanged().filter { it != null }.collect {
@@ -70,7 +70,7 @@ class PopularFragment : BaseFragment() {
             }
         }
 
-        safeObserver(Lifecycle.State.STARTED) {
+        safeObserver {
             viewModel.popularListUiState.map {
                 it.loadMorePopularData
             }.distinctUntilChanged().filter { it != null }.collect {
