@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bilibililevel6.BaseFragment
+import com.bilibililevel6.FeedItemDecorator
 import com.bilibililevel6.databinding.FragmentPopularBinding
 import com.bilibililevel6.extensions.safeObserver
 import com.bilibililevel6.extensions.showToast
@@ -48,34 +51,42 @@ class PopularFragment : BaseFragment() {
         viewBinding?.popularList?.apply {
             layoutManager = GridLayoutManager(requireActivity(), 4)
             adapter = listAdapter
+            addItemDecoration(FeedItemDecorator())
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val manager = recyclerView.layoutManager as GridLayoutManager
+                    val position = manager.findLastVisibleItemPosition()
+                    if (position == listAdapter.itemCount - 1) {
+                        viewModel.send(PopularListIntent.FetchPopularList(isLoadMore = true))
+                    }
+                }
+            })
         }
     }
 
     private fun initViewModel() {
         viewModel.send(PopularListIntent.FetchPopularList())
-        safeObserver(Lifecycle.State.STARTED) {
+        safeObserver {
             viewModel.popularListUiState.map {
                 it.isLoading
             }.distinctUntilChanged().collect {
-                Log.i("日志", "isLoading：${it}")
             }
         }
 
-        safeObserver(Lifecycle.State.STARTED) {
+        safeObserver {
             viewModel.popularListUiState.map {
-                it.popularData
-            }.distinctUntilChanged().filter { it != null }.collect {
-                Log.i("日志", "popularData")
-                listAdapter.addItems(it?.list!!)
+                it.insertPopularList
+            }.distinctUntilChanged().collect {
+                listAdapter.addItems(it)
             }
         }
 
-        safeObserver(Lifecycle.State.STARTED) {
+        safeObserver {
             viewModel.popularListUiState.map {
-                it.loadMorePopularData
-            }.distinctUntilChanged().filter { it != null }.collect {
-                Log.i("日志", "loadMorePopularData")
-                listAdapter.updateList(it?.list!!)
+                it.popularList
+            }.distinctUntilChanged().collect {
+                listAdapter.updateList(it)
             }
         }
 

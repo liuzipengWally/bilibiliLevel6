@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:text="@string/login"
         android:textSize="56sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

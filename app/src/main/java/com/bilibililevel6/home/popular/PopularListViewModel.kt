@@ -24,7 +24,13 @@ class PopularListViewModel : ViewModel() {
     }
 
     private fun fetchPopularList(isLoadMore: Boolean) {
+        if (_popularListUiState.value.isLoading && isLoadMore) return
         viewModelScope.launch {
+            if (_popularListUiState.value.noMore) {
+                _popularListUiEvent.emit(PopularListUiEvent.ShowToast("已经没有更多啦，喵！"))
+                return@launch
+            }
+
             repo.fetchPopularList(isLoadMore).onStart {
                 _popularListUiState.update {
                     it.copy(isLoading = true)
@@ -39,7 +45,19 @@ class PopularListViewModel : ViewModel() {
                 }
             }.collect { popularData ->
                 _popularListUiState.update {
-                    it.copy(popularData = popularData, isLoading = false, isLoadMore = isLoadMore)
+                    if (!isLoadMore) {
+                        it.copy(
+                            popularList = popularData.list,
+                            isLoading = false,
+                            noMore = popularData.no_more
+                        )
+                    } else {
+                        it.copy(
+                            insertPopularList = popularData.list,
+                            isLoading = false,
+                            noMore = popularData.no_more
+                        )
+                    }
                 }
             }
         }

@@ -1,7 +1,11 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="cover_list_height">150dp</dimen>
-    <dimen name="avatar_size">56dp</dimen>
-    <dimen name="cover_up_name_size">14sp</dimen>
+    <dimen name="cover_list_height">138dp</dimen>
+    <dimen name="avatar_size">40dp</dimen>
+    <dimen name="cover_up_name_size">12sp</dimen>
     <dimen name="cover_foreground_text_size">12sp</dimen>
+    <dimen name="feed_horizontal_margin">24dp</dimen>
+    <dimen name="feed_horizontal_padding">24dp</dimen>
+    <dimen name="feed_vertical_margin">16dp</dimen>
+    <dimen name="title_size">16sp</dimen>
 </resources>

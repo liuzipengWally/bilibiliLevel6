@@ -4,13 +4,10 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.bilibililevel6.R
 import com.bilibililevel6.databinding.ItemPopularListBinding
 import com.bilibililevel6.home.popular.entity.Popular
-import com.bilibililevel6.utils.DateFormatMode
-import com.bilibililevel6.utils.ImageLoader
-import com.bilibililevel6.utils.dateFormatTo
+import com.bilibililevel6.utils.*
 
 /**
  * author：liuzipeng
@@ -62,10 +59,10 @@ class PopularListAdapter(val itemClick: (popular: Popular) -> Unit) :
             )
             viewBinding.titleText.text = title
             viewBinding.upNameText.text =
-                "${owner.name} · ${ctime dateFormatTo DateFormatMode.YEAR_MONTH_DAY}"
-            viewBinding.bulletCountText.text = stat.danmaku.toString()
-            viewBinding.playCountText.text = stat.view.toString()
-            viewBinding.durationText.text = duration dateFormatTo DateFormatMode.DURATION
+                "${owner.name} · ${ctime * 1000 dateFormatTo DateFormatMode.YEAR_MONTH_DAY}"
+            viewBinding.danmakuText.text = stat.danmaku.toThousandString()
+            viewBinding.playCountText.text = stat.view.toThousandString()
+            viewBinding.durationText.text = duration.secondToDurationString()
         }
     }
 }

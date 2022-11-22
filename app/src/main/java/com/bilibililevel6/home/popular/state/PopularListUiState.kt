@@ -1,5 +1,6 @@
 package com.bilibililevel6.home.popular.state
 
+import com.bilibililevel6.home.popular.entity.Popular
 import com.bilibililevel6.home.popular.entity.PopularData
 
 /**
@@ -8,8 +9,9 @@ import com.bilibililevel6.home.popular.entity.PopularData
  */
 data class PopularListUiState(
     val isLoading: Boolean = false,
-    val isLoadMore: Boolean = false,
-    val popularData: PopularData? = null
+    val noMore: Boolean = false,
+    val popularList: List<Popular> = listOf(),
+    val insertPopularList: List<Popular> = listOf()
 ) {
-    val loadMorePopularData get() = if (isLoadMore) popularData else null
+
 }

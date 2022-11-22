@@ -4,4 +4,6 @@
     android:id="@+id/popularList"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/feed_horizontal_padding"
+    android:layout_marginEnd="@dimen/feed_horizontal_padding"
     tools:context=".home.popular.PopularFragment" />
