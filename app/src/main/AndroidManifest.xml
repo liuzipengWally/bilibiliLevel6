@@ -23,6 +23,13 @@
         android:theme="@style/Theme.BilibiliLevel6"
         tools:targetApi="n">
         <activity
+            android:name=".play.PlayVideoActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".BaseActivity"
             android:exported="false">
             <meta-data

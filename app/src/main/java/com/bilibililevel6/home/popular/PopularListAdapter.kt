@@ -48,6 +48,9 @@ class PopularListAdapter(val itemClick: (popular: Popular) -> Unit) :
         ) {
         @SuppressLint("SetTextI18n")
         fun bind(popular: Popular) = with(popular) {
+            itemView.setOnClickListener {
+                itemClick(popular)
+            }
             ImageLoader.loadRoundedCornersImg(
                 itemView.context, pic, viewBinding.coverImg, R.drawable.bili_default_image_tv, 15, 0
             )

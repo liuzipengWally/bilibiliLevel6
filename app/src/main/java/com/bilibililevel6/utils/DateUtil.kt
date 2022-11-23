@@ -10,7 +10,8 @@ import java.util.*
 
 enum class DateFormatMode(val mode: String) {
     YEAR_MONTH_DAY("yyyy-MM-dd"),
-    DURATION("HH:mm:ss")
+    HOUR_MIN_SEC("HH:mm:ss"),
+    MIN_SEC("mm:ss")
 }
 
 infix fun Long.dateFormatTo(mode: DateFormatMode): String {
@@ -19,17 +20,6 @@ infix fun Long.dateFormatTo(mode: DateFormatMode): String {
 }
 
 fun Long.secondToDurationString(): String {
-    val sec = this % 60
-    val min = (this - sec) / 60
-    val secStr = if (sec < 10) {
-        "0$sec"
-    } else {
-        sec.toString()
-    }
-    val minStr = if (min < 10) {
-        "0$min"
-    } else {
-        min.toString()
-    }
-    return "$secStr:$minStr"
+    val ms = this * 1000
+    return ms dateFormatTo DateFormatMode.MIN_SEC
 }

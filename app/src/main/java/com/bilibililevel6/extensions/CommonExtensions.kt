@@ -1,8 +1,15 @@
 package com.bilibililevel6.extensions
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.leanback.widget.OnChildViewHolderSelectedListener
+import androidx.leanback.widget.VerticalGridView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bilibililevel6.home.popular.intent.PopularListIntent
 
 /**
  * author：liuzipeng
@@ -25,4 +32,18 @@ fun Fragment.showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
 
 fun Fragment.showToast(msgResId: Int, duration: Int = Toast.LENGTH_SHORT) {
     requireActivity().showToast(msgResId, duration)
+}
+
+inline fun VerticalGridView.onLoadMore(spanCount: Int, crossinline function: () -> Unit) {
+    setOnChildViewHolderSelectedListener(object : OnChildViewHolderSelectedListener() {
+        override fun onChildViewHolderSelected(
+            parent: RecyclerView?, child: RecyclerView.ViewHolder?, position: Int, subposition: Int
+        ) {
+            val itemCount = parent?.adapter?.itemCount ?: 0
+            if (itemCount == 0) return
+            if (position >= itemCount - spanCount) {
+                function()
+            }
+        }
+    })
 }

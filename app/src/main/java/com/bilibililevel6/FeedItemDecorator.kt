@@ -26,7 +26,6 @@ class FeedItemDecorator : RecyclerView.ItemDecoration() {
         val spanCount = ((parent.layoutManager) as GridLayoutManager).spanCount
 
         val column = itemPosition % spanCount
-
         outRect.left = column * horizontalMargin / spanCount
         outRect.right = horizontalMargin - (column + 1) * horizontalMargin / spanCount
 

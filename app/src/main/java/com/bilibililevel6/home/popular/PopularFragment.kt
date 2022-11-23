@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.leanback.widget.FocusHighlightHelper
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -12,11 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bilibililevel6.BaseFragment
 import com.bilibililevel6.FeedItemDecorator
+import com.bilibililevel6.R
 import com.bilibililevel6.databinding.FragmentPopularBinding
+import com.bilibililevel6.extensions.onLoadMore
 import com.bilibililevel6.extensions.safeObserver
 import com.bilibililevel6.extensions.showToast
 import com.bilibililevel6.home.popular.intent.PopularListIntent
 import com.bilibililevel6.home.popular.state.PopularListUiEvent
+import com.bilibililevel6.play.PlayVideoActivity
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -26,7 +30,7 @@ class PopularFragment : BaseFragment() {
     private val viewModel: PopularListViewModel by lazy { ViewModelProvider(requireActivity())[PopularListViewModel::class.java] }
     private val listAdapter by lazy {
         PopularListAdapter(itemClick = {
-
+            PlayVideoActivity.start(requireActivity())
         })
     }
 
@@ -49,19 +53,11 @@ class PopularFragment : BaseFragment() {
 
     private fun initView() {
         viewBinding?.popularList?.apply {
-            layoutManager = GridLayoutManager(requireActivity(), 4)
+            setNumColumns(4)
             adapter = listAdapter
-            addItemDecoration(FeedItemDecorator())
-
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    val manager = recyclerView.layoutManager as GridLayoutManager
-                    val position = manager.findLastVisibleItemPosition()
-                    if (position == listAdapter.itemCount - 1) {
-                        viewModel.send(PopularListIntent.FetchPopularList(isLoadMore = true))
-                    }
-                }
-            })
+            onLoadMore(4) {
+                viewModel.send(PopularListIntent.FetchPopularList(isLoadMore = true))
+            }
         }
     }
 
