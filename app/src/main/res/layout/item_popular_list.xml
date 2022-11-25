@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/cover_list_height"
         android:scaleType="fitXY"
-        android:src="@drawable/bili_default_image_tv"
+        android:src="@drawable/img_video_default"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
@@ -78,7 +78,7 @@
         android:layout_marginTop="16dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textColor="@color/color_text_title"
+        android:textColor="@color/color_text_white"
         android:textSize="@dimen/title_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/avatarImg"

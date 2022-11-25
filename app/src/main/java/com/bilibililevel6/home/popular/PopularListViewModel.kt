@@ -16,8 +16,8 @@ class PopularListViewModel : ViewModel() {
     private val repo by lazy(LazyThreadSafetyMode.NONE) { PopularListRepo() }
     private val _popularListUiState = MutableStateFlow(PopularListUiState())
     val popularListUiState: StateFlow<PopularListUiState> = _popularListUiState.asStateFlow()
-    private val _popularListUiEvent = MutableStateFlow<PopularListUiEvent?>(null)
-    val popularListUiEvent: StateFlow<PopularListUiEvent?> = _popularListUiEvent.asStateFlow()
+    private val _popularListUiEvent = MutableSharedFlow<PopularListUiEvent>()
+    val popularListUiEvent: SharedFlow<PopularListUiEvent> = _popularListUiEvent.asSharedFlow()
 
     fun send(intent: PopularListIntent) = when (intent) {
         is PopularListIntent.FetchPopularList -> fetchPopularList(intent.isLoadMore)
@@ -49,6 +49,7 @@ class PopularListViewModel : ViewModel() {
                         it.copy(
                             popularList = popularData.list,
                             isLoading = false,
+                            isEmpty = popularData.list.isEmpty(),
                             noMore = popularData.no_more
                         )
                     } else {

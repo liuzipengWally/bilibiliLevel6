@@ -8,4 +8,7 @@
     <dimen name="feed_horizontal_padding">24dp</dimen>
     <dimen name="feed_vertical_margin">16dp</dimen>
     <dimen name="title_size">16sp</dimen>
+    <dimen name="loading_view_width">370dp</dimen>
+    <dimen name="loading_view_height">185dp</dimen>
+    <dimen name="empty_text_size">16sp</dimen>
 </resources>

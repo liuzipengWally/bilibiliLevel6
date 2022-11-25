@@ -41,7 +41,7 @@ inline fun VerticalGridView.onLoadMore(spanCount: Int, crossinline function: () 
         ) {
             val itemCount = parent?.adapter?.itemCount ?: 0
             if (itemCount == 0) return
-            if (position >= itemCount - spanCount) {
+            if (position >= itemCount - spanCount * 2) {
                 function()
             }
         }

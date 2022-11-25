@@ -87,6 +87,7 @@ object ImageLoader {
         Glide.with(context)
             .load(url)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .placeholder(defaultResId)
             .error(defaultResId)
             .apply(RequestOptions.bitmapTransform(RoundedCornersTransformation(radius, margin)))
             .into(imageView)

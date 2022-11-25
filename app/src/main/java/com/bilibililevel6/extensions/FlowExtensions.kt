@@ -1,6 +1,5 @@
 package com.bilibililevel6.extensions
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.bilibililevel6.net.BaseDataOfWeb
 import com.bilibililevel6.net.NetExceptionHandler
@@ -30,11 +29,21 @@ fun <T : BaseDataOfWeb<R>, R> Flow<T>.handleResponseCode(): Flow<R> =
     }
 
 
-fun LifecycleOwner.safeObserver(
-    state: Lifecycle.State = Lifecycle.State.CREATED,
+fun LifecycleOwner.launchObserve(
+    state: Lifecycle.State = Lifecycle.State.RESUMED,
     block: suspend CoroutineScope.() -> Unit
 ) {
     lifecycleScope.launch {
         lifecycle.repeatOnLifecycle(state, block)
+    }
+}
+
+inline fun <T, R> StateFlow<T>.observeState(crossinline transform: suspend (value: T) -> R): Flow<R> {
+    return this.map { transform(it) }.distinctUntilChanged()
+}
+
+fun <T> MutableSharedFlow<T>.emitEvent(viewModel: ViewModel, uiEvent: T) {
+    viewModel.viewModelScope.launch {
+        emit(uiEvent)
     }
 }

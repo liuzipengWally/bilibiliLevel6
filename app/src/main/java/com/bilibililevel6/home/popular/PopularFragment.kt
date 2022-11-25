@@ -5,24 +5,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.leanback.widget.FocusHighlightHelper
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bilibililevel6.BaseFragment
-import com.bilibililevel6.FeedItemDecorator
-import com.bilibililevel6.R
 import com.bilibililevel6.databinding.FragmentPopularBinding
 import com.bilibililevel6.extensions.onLoadMore
-import com.bilibililevel6.extensions.safeObserver
+import com.bilibililevel6.extensions.launchObserve
+import com.bilibililevel6.extensions.observeState
 import com.bilibililevel6.extensions.showToast
 import com.bilibililevel6.home.popular.intent.PopularListIntent
 import com.bilibililevel6.home.popular.state.PopularListUiEvent
 import com.bilibililevel6.play.PlayVideoActivity
+import com.bilibililevel6.widget.EmptyViewType
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 
 class PopularFragment : BaseFragment() {
@@ -49,6 +43,13 @@ class PopularFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
         initView()
+        initEvent()
+    }
+
+    private fun initEvent() {
+        viewBinding?.emptyView?.setOnClickListener {
+            viewModel.send(PopularListIntent.FetchPopularList())
+        }
     }
 
     private fun initView() {
@@ -61,37 +62,61 @@ class PopularFragment : BaseFragment() {
         }
     }
 
-    private fun initViewModel() {
-        viewModel.send(PopularListIntent.FetchPopularList())
-        safeObserver {
-            viewModel.popularListUiState.map {
+    private fun initViewModel() = viewModel.apply {
+        send(PopularListIntent.FetchPopularList())
+        launchObserve {
+            popularListUiState.observeState {
                 it.isLoading
-            }.distinctUntilChanged().collect {
+            }.collect {
+                if (it && listAdapter.itemCount == 0) {
+                    viewBinding?.loadingView?.starLoading()
+                } else {
+                    viewBinding?.loadingView?.endLoading()
+                }
             }
         }
 
-        safeObserver {
-            viewModel.popularListUiState.map {
+        launchObserve {
+            popularListUiState.observeState {
                 it.insertPopularList
-            }.distinctUntilChanged().collect {
+            }.collect {
                 listAdapter.addItems(it)
             }
         }
 
-        safeObserver {
-            viewModel.popularListUiState.map {
+        launchObserve {
+            popularListUiState.observeState {
                 it.popularList
-            }.distinctUntilChanged().collect {
-                listAdapter.updateList(it)
+            }.collect {
+                if (it.isNotEmpty()) {
+                    listAdapter.updateList(it)
+                }
             }
         }
 
-        safeObserver {
-            viewModel.popularListUiEvent.collect {
+        launchObserve {
+            popularListUiState.observeState {
+                it.isEmpty
+            }.collect {
+                if (it) {
+                    viewBinding?.popularList?.visibility = View.GONE
+                    viewBinding?.emptyView?.showEmptyView(
+                        EmptyViewType.NO_DATA
+                    )
+                } else {
+                    viewBinding?.popularList?.visibility = View.VISIBLE
+                    viewBinding?.emptyView?.hideEmptyView()
+                }
+            }
+        }
+
+        launchObserve {
+            popularListUiEvent.collect {
                 when (it) {
                     is PopularListUiEvent.ShowToast -> showToast(it.message)
-                    is PopularListUiEvent.ShowErrorPage -> Log.i("日志", "error:${it.message}")
-                    else -> {}
+                    is PopularListUiEvent.ShowErrorPage -> viewBinding?.emptyView?.showEmptyView(
+                        EmptyViewType.LOAD_ERROR
+                    )
                 }
             }
         }

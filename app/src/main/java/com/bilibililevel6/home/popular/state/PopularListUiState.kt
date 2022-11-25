@@ -10,6 +10,7 @@ import com.bilibililevel6.home.popular.entity.PopularData
 data class PopularListUiState(
     val isLoading: Boolean = false,
     val noMore: Boolean = false,
+    val isEmpty: Boolean = false,
     val popularList: List<Popular> = listOf(),
     val insertPopularList: List<Popular> = listOf()
 ) {

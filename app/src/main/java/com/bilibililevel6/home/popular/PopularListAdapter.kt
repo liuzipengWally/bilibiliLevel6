@@ -52,13 +52,13 @@ class PopularListAdapter(val itemClick: (popular: Popular) -> Unit) :
                 itemClick(popular)
             }
             ImageLoader.loadRoundedCornersImg(
-                itemView.context, pic, viewBinding.coverImg, R.drawable.bili_default_image_tv, 15, 0
+                itemView.context, pic, viewBinding.coverImg, R.drawable.img_video_default, 15, 0
             )
             ImageLoader.loadCircleImg(
                 itemView.context,
                 owner.face,
                 viewBinding.avatarImg,
-                R.drawable.bili_default_image_tv
+                R.drawable.ic_user_default_avatar
             )
             viewBinding.titleText.text = title
             viewBinding.upNameText.text =
