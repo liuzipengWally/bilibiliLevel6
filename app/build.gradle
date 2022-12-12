@@ -36,7 +36,8 @@ android {
 
 dependencies {
     def lifecycle_version = "2.5.1"
-    implementation 'com.google.android.material:material:1.8.0-alpha02'
+    def media3_version = "1.0.0-beta03"
+    implementation 'com.google.android.material:material:1.8.0-alpha03'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.core:core-ktx:1.9.0'
@@ -49,6 +50,9 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.media3:media3-exoplayer:$media3_version"
+    implementation "androidx.media3:media3-ui:$media3_version"
+//    implementation "androidx.media3:media3-exoplayer-dash:$media3_version"
 //    implementation 'com.github.ctiao:DanmakuFlameMaster:0.9.25'
-    implementation 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'
+//    implementation 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'
 }

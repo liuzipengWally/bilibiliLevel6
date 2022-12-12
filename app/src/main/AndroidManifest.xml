@@ -22,6 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BilibiliLevel6"
         tools:targetApi="n">
+
         <activity
             android:name=".play.PlayVideoActivity"
             android:exported="false">

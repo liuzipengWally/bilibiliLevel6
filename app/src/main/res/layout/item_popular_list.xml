@@ -7,7 +7,7 @@
     android:background="@drawable/feed_item_select_bg"
     android:clickable="true"
     android:focusable="true"
-    tools:background="@drawable/background_image">
+    tools:background="@color/default_background">
 
     <ImageView
         android:id="@+id/coverImg"

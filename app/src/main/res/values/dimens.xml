@@ -11,4 +11,5 @@
     <dimen name="loading_view_width">370dp</dimen>
     <dimen name="loading_view_height">185dp</dimen>
     <dimen name="empty_text_size">16sp</dimen>
+    <dimen name="player_duration_text_size">18sp</dimen>
 </resources>

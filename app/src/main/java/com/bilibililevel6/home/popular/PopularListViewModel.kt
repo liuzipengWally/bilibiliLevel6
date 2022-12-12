@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bilibililevel6.home.popular.intent.PopularListIntent
 import com.bilibililevel6.home.popular.state.PopularListUiEvent
 import com.bilibililevel6.home.popular.state.PopularListUiState
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -16,8 +17,8 @@ class PopularListViewModel : ViewModel() {
     private val repo by lazy(LazyThreadSafetyMode.NONE) { PopularListRepo() }
     private val _popularListUiState = MutableStateFlow(PopularListUiState())
     val popularListUiState: StateFlow<PopularListUiState> = _popularListUiState.asStateFlow()
-    private val _popularListUiEvent = MutableSharedFlow<PopularListUiEvent>()
-    val popularListUiEvent: SharedFlow<PopularListUiEvent> = _popularListUiEvent.asSharedFlow()
+    private val _popularListUiEvent = Channel<PopularListUiEvent>()
+    val popularListUiEvent: Flow<PopularListUiEvent> = _popularListUiEvent.receiveAsFlow()
 
     fun send(intent: PopularListIntent) = when (intent) {
         is PopularListIntent.FetchPopularList -> fetchPopularList(intent.isLoadMore)
@@ -27,7 +28,7 @@ class PopularListViewModel : ViewModel() {
         if (_popularListUiState.value.isLoading && isLoadMore) return
         viewModelScope.launch {
             if (_popularListUiState.value.noMore) {
-                _popularListUiEvent.emit(PopularListUiEvent.ShowToast("已经没有更多啦，喵！"))
+                _popularListUiEvent.send(PopularListUiEvent.ShowToast("已经没有更多啦，喵！"))
                 return@launch
             }
 
@@ -38,9 +39,9 @@ class PopularListViewModel : ViewModel() {
             }.catch {
                 it.message?.let { msg ->
                     if (isLoadMore) {
-                        _popularListUiEvent.emit(PopularListUiEvent.ShowToast(msg))
+                        _popularListUiEvent.send(PopularListUiEvent.ShowToast(msg))
                     } else {
-                        _popularListUiEvent.emit(PopularListUiEvent.ShowErrorPage(msg))
+                        _popularListUiEvent.send(PopularListUiEvent.ShowErrorPage(msg))
                     }
                 }
             }.collect { popularData ->

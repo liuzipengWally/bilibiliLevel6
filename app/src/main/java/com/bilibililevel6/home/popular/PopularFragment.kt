@@ -1,7 +1,6 @@
 package com.bilibililevel6.home.popular
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,15 +15,13 @@ import com.bilibililevel6.home.popular.intent.PopularListIntent
 import com.bilibililevel6.home.popular.state.PopularListUiEvent
 import com.bilibililevel6.play.PlayVideoActivity
 import com.bilibililevel6.widget.EmptyViewType
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 
 class PopularFragment : BaseFragment() {
     private var viewBinding: FragmentPopularBinding? = null
     private val viewModel: PopularListViewModel by lazy { ViewModelProvider(requireActivity())[PopularListViewModel::class.java] }
     private val listAdapter by lazy {
         PopularListAdapter(itemClick = {
-            PlayVideoActivity.start(requireActivity())
+            PlayVideoActivity.start(requireActivity(), it.aid, it.cid, it.bvid)
         })
     }
 

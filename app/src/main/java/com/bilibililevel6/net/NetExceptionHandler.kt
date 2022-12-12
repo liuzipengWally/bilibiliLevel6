@@ -72,7 +72,7 @@ class NetExceptionHandler {
         fun handleException(e: Throwable): Throwable {
             when (e) {
                 is RequestException -> return e
-                is ResponseException -> return e
+                is RequestException -> return e
                 is HttpException -> {
                     val msg = when (e.code()) {
                         UNAUTHORIZED -> "我们的访问被服务器拒绝啦~(${e.code()})"
@@ -85,31 +85,33 @@ class NetExceptionHandler {
                         SERVICE_UNAVAILABLE -> "服务器可能正在维护，请稍后重试(${e.code()})"
                         else -> "网络异常，请检查网络连接后重试(${e.code()})"
                     }
-                    return RequestException(msg)
+                    return RequestException(e.code(), msg)
                 }
                 is JsonParseException, is JSONException, is ParseException -> {
-                    return ResponseException("数据解析错误，这可能是一个bug(${PARSE_ERROR})")
+                    return RequestException(PARSE_ERROR, "数据解析错误，这可能是一个bug(${PARSE_ERROR})")
                 }
                 is ConnectException -> {
-                    return RequestException("连接失败，网络连接可能存在异常，请检查网络后重试(${NETWORK_ERROR})")
+                    return RequestException(
+                        NETWORK_ERROR,
+                        "连接失败，网络连接可能存在异常，请检查网络后重试(${NETWORK_ERROR})"
+                    )
                 }
                 is SSLHandshakeException -> {
-                    return RequestException("证书验证失败(${SSL_ERROR})")
+                    return RequestException(SSL_ERROR, "证书验证失败(${SSL_ERROR})")
                 }
                 is UnknownHostException -> {
-                    return RequestException("无法连接到服务器，请检查你的网络或稍后重试(${HOST_ERROR})")
+                    return RequestException(HOST_ERROR, "无法连接到服务器，请检查你的网络或稍后重试(${HOST_ERROR})")
                 }
                 is SocketTimeoutException -> {
-                    return RequestException("连接超时,请稍候重试(${TIMEOUT})")
+                    return RequestException(TIMEOUT, "连接超时,请稍候重试(${TIMEOUT})")
                 }
                 else -> {
-                    return RequestException("出现了未知的错误~(${UNKNOWN})")
+                    return RequestException(UNKNOWN, "出现了未知的错误~(${UNKNOWN})")
                 }
             }
         }
     }
 }
 
-class ResponseException(msg: String) : Throwable(msg)
+class RequestException(var code: Int, msg: String) : Throwable(msg)
 
-class RequestException(msg: String) : Throwable(msg)

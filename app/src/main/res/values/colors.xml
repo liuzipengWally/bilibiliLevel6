@@ -3,4 +3,7 @@
     <color name="color_text_white">#ffffff</color>
     <color name="color_cover_up_name">#888C93</color>
     <color name="color_cover_foreground_text">#ffffff</color>
+    <color name="buffered_color">#717171</color>
+    <color name="played_color">#ED7099</color>
+    <color name="unplayed_color">#474747</color>
 </resources>

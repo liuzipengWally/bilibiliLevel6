@@ -3,7 +3,7 @@ package com.bilibililevel6.extensions
 import androidx.lifecycle.*
 import com.bilibililevel6.net.BaseDataOfWeb
 import com.bilibililevel6.net.NetExceptionHandler
-import com.bilibililevel6.net.ResponseException
+import com.bilibililevel6.net.RequestException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -24,7 +24,7 @@ fun <T : BaseDataOfWeb<R>, R> Flow<T>.handleResponseCode(): Flow<R> =
         if (value.code == 0) {
             return@transform emit(value.data)
         } else {
-            throw ResponseException(value.message)
+            throw RequestException(value.code, value.message)
         }
     }
 
