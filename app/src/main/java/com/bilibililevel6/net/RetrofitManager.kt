@@ -2,9 +2,20 @@ package com.bilibililevel6.net
 
 import android.app.Application
 import android.content.Context
+import com.bilibililevel6.Config
+import com.bilibililevel6.extensions.dataStore
 import com.bilibililevel6.extensions.isNetworkAvailable
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import okhttp3.Cache
 import okhttp3.CacheControl
+import okhttp3.Cookie
+import okhttp3.CookieJar
+import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -73,14 +84,27 @@ object RetrofitManager {
             .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT, TimeUnit.SECONDS)
             .cache(Cache(file, cacheSize))
+            .cookieJar(object : CookieJar {
+                override fun loadForRequest(url: HttpUrl): List<Cookie> {
+                    if (Config.cookies.isEmpty()) {
+                        loadCookie(context)
+                    }
+                    return Config.cookies
+                }
+
+                override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
+                    Config.cookies = cookies
+                    saveLoggedCookie(context, Gson().toJson(cookies))
+                }
+            })
             .addInterceptor(Interceptor { chain ->
                 val request = chain.request()
-                chain.proceed(
+                val response = chain.proceed(
                     request
                         .newBuilder()
-//                        .url(request.url.newBuilder().addQueryParameter("","").build()) 添加默认参数
                         .build()
                 )
+                response
             })
             .addInterceptor(getCacheInterceptor(context))
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
@@ -101,13 +125,28 @@ object RetrofitManager {
                 chain.proceed(
                     request
                         .newBuilder()
-//                        .url(request.url.newBuilder().addQueryParameter("","").build()) 添加默认参数
                         .build()
                 )
             })
             .addInterceptor(getCacheInterceptor(context))
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .retryOnConnectionFailure(true).build()
+    }
+
+    fun loadCookie(context: Context) {
+        MainScope().launch(context = Dispatchers.IO) {
+            val cookie = context.dataStore.data.first().loggedCookie
+            if (cookie.isNullOrEmpty()) return@launch
+            val cookies: List<Cookie> =
+                Gson().fromJson(cookie, object : TypeToken<List<Cookie>>() {}.type)
+            Config.cookies = cookies
+        }
+    }
+
+    private fun saveLoggedCookie(context: Context, realLoggedCookie: String) {
+        MainScope().launch {
+            context.dataStore.updateData { it.copy(loggedCookie = realLoggedCookie) }
+        }
     }
 
     /**

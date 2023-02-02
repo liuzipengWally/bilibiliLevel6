@@ -11,5 +11,6 @@ class BilibiliApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         RetrofitManager.init(this)
+        RetrofitManager.loadCookie(this)
     }
 }

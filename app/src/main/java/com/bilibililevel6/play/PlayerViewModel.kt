@@ -2,6 +2,7 @@ package com.bilibililevel6.play
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bilibililevel6.home.popular.state.PopularListUiEvent
 import com.bilibililevel6.play.intent.PlayerIntent
 import com.bilibililevel6.play.state.PlayerUiEvent
 import com.bilibililevel6.play.state.PlayerUiState
@@ -36,15 +37,16 @@ class PlayerViewModel : ViewModel() {
         fnval: Int
     ) {
         viewModelScope.launch {
-            repo.fetchVideoStreamInfo(avid, cid, qn, fnval).onStart {
-
-            }.catch {
-
-            }.collect { video ->
+            repo.fetchVideoStreamInfo(avid, cid, qn, fnval).catch {
+                it.message?.let { msg ->
+                    _playerUiEvent.send(PlayerUiEvent.ShowToast(msg))
+                }
+            }.collect { videoStreamInfo ->
                 _playerUiState.update {
                     it.copy(
-                        videoUrl = video.dash.video[0].baseUrl,
-                        audioUrl = video.dash.audio[0].baseUrl
+                        videoSources = videoStreamInfo.dash.video,
+                        audioSources = videoStreamInfo.dash.audio,
+                        supportFormats = videoStreamInfo.support_formats
                     )
                 }
             }

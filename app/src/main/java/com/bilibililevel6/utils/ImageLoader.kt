@@ -50,7 +50,7 @@ object ImageLoader {
             .into(imageView)
     }
 
-    fun loadImg(context: Context, url: String, imageView: ImageView, defaultResId: Int) {
+    fun loadImg(context: Context, url: String, imageView: ImageView, defaultResId: Int = 0) {
         Glide.with(context)
             .load(url)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
